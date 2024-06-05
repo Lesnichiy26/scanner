@@ -19,7 +19,7 @@ bool isInteger(const std::string& str) {
 
 
 int main(int argc, char* argv[]) { // expected this syntax : exe IP start_range end_range ///// so expected argc == 4
-    if (argc != 3) {
+    if (argc != 4) {
         std::cerr << "Error : expected 4 arguments\n";
         return EXIT_FAILURE;
     }
@@ -41,5 +41,9 @@ int main(int argc, char* argv[]) { // expected this syntax : exe IP start_range 
     }
     PortChecker checker(IP);
     auto required = checker.checkPortRange(start_, end_);
+    for (auto el : required) {
+        std::cout << el << ' ';
+    }
+    std::cout << '\n';
     return 0;
 }

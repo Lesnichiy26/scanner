@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include <cstring>
 #include <cerrno>
+#include <queue>
 #include <sys/epoll.h>
 
 class PortChecker {
@@ -17,16 +18,14 @@ public:
 
     ~PortChecker() = default;
 
-    std::vector<int> checkPortRange(int start, int end, int num_threads = 10);
+    std::vector<int> checkPortRange(int start, int end, int num_threads = 100);
 
 private:
     std::string ip_;
+    std::mutex cerr_mutex_;
 
-    void checkPortSubset(int start, int end, std::vector<int>& open, std::mutex& mtx);
-
+    void checkPortSubset(int start, int end, std::vector<int>& open);
     bool createSocket(int port, int& sock);
-
     bool initEpoll(int sock, int& epoll_fd);
-
-    bool isPortOpen(int port);
+    bool isPortOpen(int port, int sock, int epoll_fd);
 };
